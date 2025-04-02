@@ -2,7 +2,7 @@ R code for "Testing for integer integration in functional time series"
 
 auxiliary: sub-folder containing some generic functions
 
-data: sub-folder containing Canadian yield curve data and French mortality data
+data.zip: zip-folder containing Canadian yield curve data and French mortality data
 
 empirical_canadian_yield.r: study on the integration property of Canadian yield curves
 
