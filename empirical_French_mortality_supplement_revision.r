@@ -42,18 +42,19 @@ ql=0.04467116
 qu=2.12588475 
 
 # Transformations#####################################################################
-transformation=4  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
+transformation=1  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
 
 
 
 
 ######################################################################################
-### V0 and V1 tests for the NINTH subregion (female & male)####
+### Section 1: V0 and V1 tests for the NINTH subregion (female & male)####
 ######################################################################################
 X_series=fseries[21:121,,9]
 findex=NULL
 mindex=NULL
 
+transformation=4 ## 1 for the results for Alsace in Table 5 of the main manuscript ; 3 (resp. 4) for the results for Alsace in Table 1 (resp. Table 2) of the Supplementary Material; 
 
 result=NULL 
 
@@ -263,16 +264,18 @@ result2
 
 
 
+######################################################################################
+######################################################################################
+### Section 2: V0,V1 and V2 tests together for the FIRST subregion (female)####
+######################################################################################
+######################################################################################
+## This part is to just confirm that d = 2 or less for the data set of log mortality rates
 
-######################################################################################
-######################################################################################
-### V0,V1 and V2 tests together for the FIRST subregion (female)####
-######################################################################################
-######################################################################################
 X_series=fseries[1:121,,1]
 findex=NULL
 mindex=NULL
 
+transformation = 1
 
 result=NULL 
 
@@ -406,19 +409,18 @@ if (teststat3 > ql & teststat3 <qu) {print("Accept")}
 
 
 
-
-
-
-
 ######################################################################################
 ######################################################################################
-### V0,V1 and V2 tests together for the SEVENTH subregion (female)####
+### Section 3: V0,V1 and V2 tests together for the SEVENTH subregion (female)####
 ######################################################################################
 ######################################################################################
+## This part is to just confirm that d = 2 or less for the data set of log mortality rates
+
 X_series=fseries[1:121,,7]
 findex=NULL
 mindex=NULL
 
+transformation = 1
 
 result=NULL 
 
@@ -551,15 +553,20 @@ if (teststat3 > ql & teststat3 <qu) {print("Accept")}
 
 
 
+
+
 ######################################################################################
 ######################################################################################
-### V0,V1 and V2 tests together for the 21TH subregion (male)####
+### Section 4: V0,V1 and V2 tests together for the 21TH subregion (male)####
 ######################################################################################
 ######################################################################################
+## This part is to just confirm that d = 2 or less for the data set of log mortality rates
+
 X_series=mseries[1:121,,21]
 findex=NULL
 mindex=NULL
 
+transformation = 1
 
 result=NULL 
 
@@ -696,11 +703,12 @@ if (teststat3 > ql & teststat3 <qu) {print("Accept")}
 
 ######################################################################################################
 ######################################################################################################
-### V0,V1 and V2 tests together for log-transformation (revision, for the Supplementary Appendix) ####
+### Section 5: V0,V1 and V2 tests for log-transformation (revision, for the Supplementary Appendix) ##
 ######################################################################################################
 ######################################################################################################
-region_index=9
-gender=1 # 1 for female, 2 for male
+## This part is to just confirm that d = 2 or less for the data set of log mortality rates
+region_index=21   ## Change this to "1,5,7,9,13,21 for female" & "1,21 for male". 
+gender=2 # 1 for female, 2 for male
 transformation=4 
 
 
