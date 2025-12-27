@@ -4,7 +4,6 @@ source("load_packages.r")
 ## Relevant path needs to be set.
 setwd("Path/data/NUT2")
 
-
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
 mseries = array(0,dim = c(121,106,n_sub))
@@ -69,9 +68,13 @@ if (sum(is.na(check))>0){mindex=append(mindex,jj)}
 }
 
 
+######################################################################################
+### V0 and V1 tests for the subregions except 9th regtion (female & male)####
+### Results for 9th region can be obtained using the supplementary code  ####
+######################################################################################
 
-# Transformations#####################################################################
-transformation=4  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
+#### Transformations#####################################################################
+transformation=1  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
 
 
 uband=1/5
@@ -287,3 +290,4 @@ if (teststat2 < ql) {result2=append(result2,0.5)}
 result
 result2
 
+## Reported numbers 0.5,1.0 and 1.5 represent d in (0,1), d=1, and d in (1,2), respectively.  
