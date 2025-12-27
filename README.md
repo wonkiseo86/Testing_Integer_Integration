@@ -1,5 +1,9 @@
 R code for "Testing for integer integration in functional time series"
 
+################
+Files and Scripts
+################
+
 auxiliary: sub-folder containing some generic functions
 
 data: folder containing Canadian yield curve data and French mortality data
@@ -22,8 +26,9 @@ Int_integ_sim_size_power_properties_demeaned_revision.r: size and power of the t
 
 
 
-
-Detailed Instruction for Reproduction of the Empirical/Simulation Results:
+##########################################################################
+Detailed Instruction for Reproduction of the Empirical/Simulation Results
+##########################################################################
 
 Empirical results: :
 1. Table 4 of the Main Article
