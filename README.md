@@ -24,6 +24,7 @@ Int_integ_sim_size_power_properties_bandwidths.r: size and power of the tests de
 
 Int_integ_sim_size_power_properties_demeaned_revision.r: size and power of the tests computed with the demeaned time series
 
+Int_integ_sim_size_power_properties_local_power_d_revision: power against local alternatives
 
 
 ##########################################################################
