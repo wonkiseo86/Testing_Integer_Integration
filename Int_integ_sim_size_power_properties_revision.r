@@ -10,11 +10,11 @@ inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
 
-nonstat=1
-addmargin=0.01
- bdd=0.15;  ###########################################################################################
- bdd2=0.15;
- 
+ nonstat=1  ## 0 for V0 test, 1 for V1 test
+ addmargin=0.01
+ bdd=0.15;  ##### parameter "b" in the paper ##########
+ bdd2=0.15; ## Not used
+  
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
  {
  bunin=0
