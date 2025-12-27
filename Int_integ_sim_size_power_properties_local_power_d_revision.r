@@ -9,8 +9,6 @@ setwd("Path")
 inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
-
-
 ## T_sample=c(125,250,500,750,1000)
 result_collect = NULL; result_collect2=result_collect
 
@@ -20,7 +18,8 @@ for (T_sample in c(125,250,500,750,1000))
 
 nonstat=0
 addmargin = 0.01
-bdd=0.6; bdd2=bdd ###########################################################################################
+bdd=0.15; ##### parameter "b" in the paper ########## 
+bdd2=bdd ############################################
 
 Dset3=round(seq(-0.9,0.9,by=0.3),digits=3)
 #Dset3=c(-2.4,-2,-1.6,-1.2,-0.8,-0.4,0,0.4,0.8,1.2,1.6,2.0,2.4)/2 
@@ -83,7 +82,7 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
 decrea=0.5
 margin=0
 cutsd=1
-uband=1/5 #1/5 and 1/4
+uband=1/4 #0, 1/5 and 1/4
 
 
 maxiter=2000
