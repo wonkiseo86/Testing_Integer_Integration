@@ -10,11 +10,10 @@ inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
 
-
-nonstat=1
-addmargin=0.01
- bdd=0.15;  ###########################################################################################
- bdd2=0.15;
+ nonstat=0
+ addmargin=0.01
+ bdd=0.6;  ###########################################################################################
+ bdd2=0.15; ## Not Used
  
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
  {
@@ -110,7 +109,7 @@ REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
 
 maxiter=2000
 
-T_sample=c(125,250,500,750,1000)
+T_sample=c(250,500,750,1000)
 
 T_max=max(T_sample)
 TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
@@ -165,7 +164,7 @@ teststat=(eval_vx1/eval_vx0)
 xxcoef=xcoef[1:TTT,]-rowMeans(xcoef[1:TTT,])
 
 
-if(d_sim<1/2 & d_sim>-1/2){
+if(d_sim<1/2 & d_sim>-1.2){
 if(d_sim>0){corrind=1}
 if(d_sim<0){corrind=-1}
 if(d_sim==0){corrind=0} }
@@ -193,7 +192,7 @@ if(seed_number%%200==0){print(c(d_sim,sum(TEST_RESULT[1:seed_number,1]==corrind)
 
 }
 
-REPORT=rbind(REPORT,c(sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number))
+REPORT=rbind(REPORT,c(sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number))
 Dresults=rbind(Dresults,REPORT)
 }
 
