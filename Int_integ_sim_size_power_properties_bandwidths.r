@@ -9,9 +9,9 @@ setwd("Path")
 inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
-nonstat=0
-addmargin=0.01
- bdd=0.75;  #### 0.15, 0.6; 0.75 for supplement ######################
+ nonstat=0
+ addmargin=0.01
+ bdd=0.75;  ### parameter "b" in the paper,  0.15, 0.6; 0.75 for the results given in The Supplementary Material ######################
  bdd2=bdd;
  
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
@@ -74,7 +74,7 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
 decrea=0.5
 margin=0
 cutsd=1
-uband=1/5 # 0, 1/4
+uband=1/4 # 0, 1/5, 1/4
 
 
 
@@ -197,3 +197,4 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
