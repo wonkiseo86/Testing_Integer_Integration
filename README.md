@@ -108,4 +108,4 @@ Description:
 (i) Note: Results across various values of T and c are obtained together for each value of b (= 0.15, 0.6).
 (ii) Results are obtained using "Int_integ_sim_size_power_properties_local_power_d_revision.r". First set the "uband" parameter (determining bandwidth q) as "uband=1/4". Then, set the "bdd" parameter (corresponding to the value b) as "bdd=0.15" (resp. "bdd=0.6") to obtain the results for the upper (resp. lower) rows.
 
-8. Figure 1 of the Supplementary Material is produced from the results for Tables 6-8.  
+9. Figure 1 of the Supplementary Material is produced from the results for Tables 6-8.  
