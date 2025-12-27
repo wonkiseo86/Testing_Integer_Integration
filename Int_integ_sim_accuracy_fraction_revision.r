@@ -10,8 +10,8 @@ inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
 
- bdd=0.15;  ###########################################################################################
- bdd2=0.15;
+bdd=0.6;  ###########################################################################################
+ bdd2=0.15;  ##### Not Used
  
 addmargin=0.01
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
