@@ -68,7 +68,7 @@ Description:
 Scripts: "Int_integ_sim_size_accuracy_integer_revision.r" and "Int_integ_sim_size_fraction_integer_revision.r"
 Description:
 (i) Note: Results across various values of T and d_1 are obtained together for each value of b (= 0.15, 0.6).
-(ii) Results for Table 2(a) are obtained using "Int_integ_sim_size_accuracy_integer_revision.r". Set the  "bdd" parameter (corresponding to the value b) as "bdd=0.15" to obtain the upper rows of Table 2(a) and "bdd=0.6" to obtain the lower rows of Table 2(a). 
+(ii) Results for Table 2(a) are obtained using "Int_integ_sim_size_accuracy_integer_revision.r". Set the "bdd" parameter (corresponding to the value b) as "bdd=0.15" to obtain the upper rows of Table 2(a) and "bdd=0.6" to obtain the lower rows of Table 2(a). 
 (iii) Results for Table 2(b) are obtained in the same way but using "Int_integ_sim_size_fraction_integer_revision.r"
 
 3. Table 3 of the Main Article
