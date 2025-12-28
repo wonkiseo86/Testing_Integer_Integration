@@ -31,9 +31,9 @@ Int_integ_sim_size_power_properties_local_power_d_revision: power against local 
 ######### Detailed Instruction for Reproduction of the Empirical/Simulation Results #########
 
 Empirical results: :
-1. Table 4 of the Main Article
-Data Required: "Canadian_daily_yields.csv". 
-Script: "empirical _canadian_yield.r". 
+1. Table 4 of the Main Article\
+Data Required: "Canadian_daily_yields.csv".\ 
+Script: "empirical _canadian_yield.r".\ 
 Description: Results are directly obtained from the script.
 
 2. Table 5 of the Main Article
