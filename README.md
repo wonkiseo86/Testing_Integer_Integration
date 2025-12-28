@@ -29,8 +29,8 @@ Int_integ_sim_size_power_properties_local_power_d_revision: power against local 
  
 <br> <br><br>
 ######### Detailed Instruction for Reproduction of the Empirical/Simulation Results #########
-
-Empirical results: :
+<br>
+Empirical results: <br>
 1. Table 4 of the Main Article<br>
 Data Required: "Canadian_daily_yields.csv".<br> 
 Script: "empirical _canadian_yield.r".<br> 
@@ -56,7 +56,7 @@ Scripts: "empirical _French_mortality_revision.r" and "empirical _French_mortali
 Description:<br>
 (i) Results for the subregions except the 9th region (Alsace) are obtained using "empirical _French_mortality_revision.r". Set the "transformation" parameter  as "transformation=4".<br>
 (ii)  Results for the 9th region (Alsace) are obtained using Section 1 of "empirical _French_mortality_supplement_revision.r". Set the "transformation" parameter  as "transformation=4".<br>
-
+<br><br>
 Simulation results:<br>
 1. Table 1 of the Main Article<br>
 Script: "Int_integ_sim_size_power_properties_revision.r"<br>
