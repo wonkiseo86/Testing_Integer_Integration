@@ -93,7 +93,7 @@ Description:
 Script: "Int_integ_sim_size_power_properties_bandwidths.r"
 Description:
 (i) Note: Results across various values of T and d_1 are obtained together for each value of the bandwidth q.
-(ii) Results are obtained using "Int_integ_sim_size_power_properties_bandwidths.r". First set the "bdd" parameter (corresponding to the value b) as "bdd=0.75". Then, set the "uband" parameter (determining bandwidth q) as "uband=0", "uband=1/5" and "uband=1/4" to obtain the results for the case q~logT, q~T^{1/5}, and q~T^{1/4}, respectively.
+(ii) Results are obtained using "Int_integ_sim_size_power_properties_bandwidths.r". First set the "bdd" parameter (corresponding to the value b) as "bdd=0.75". Then, set the "uband" parameter (determining bandwidth q) as "uband=0", "uband=1/5" and "uband=1/4" to obtain the results for the case q ~ log T, q ~ T^{1/5}, and q ~ T^{1/4}, respectively.
 
 6. Table 6 of the Supplementary Material
 Script: "Int_integ_sim_size_power_properties_local_power_d_revision.r"
