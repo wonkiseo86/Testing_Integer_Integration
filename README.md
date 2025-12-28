@@ -4,7 +4,7 @@ R code for "Testing for integer integration in functional time series"
 
 auxiliary: sub-folder containing some generic functions
 
-data: folder containing Canadian yield curve data and French mortality data
+data.zip: folder containing Canadian yield curve data and French mortality data
 
 empirical_canadian_yield.r: study on the integration property of Canadian yield curves
 
@@ -24,6 +24,7 @@ Int_integ_sim_size_power_properties_demeaned_revision.r: size and power of the t
 
 Int_integ_sim_size_power_properties_local_power_d_revision: power against local alternatives
 
+CV1.Rdata: Pre-computed critical values for various quantiles which are used for the Canadian yield curve example (to compute approximate the p-values). 
 
  
  
