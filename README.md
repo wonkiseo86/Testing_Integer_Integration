@@ -30,7 +30,7 @@ CV1.Rdata: Critical values for various quantiles which are used for the Canadian
  
 <br> <br><br>
 ######### Detailed Instruction for Reproduction of the Empirical/Simulation Results #########
-<br>
+<br><br>
 Empirical results: <br>
 1. Table 4 of the Main Article<br>
 Data Required: "Canadian_daily_yields.csv".<br> 
