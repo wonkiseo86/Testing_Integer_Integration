@@ -27,7 +27,7 @@ Int_integ_sim_size_power_properties_local_power_d_revision: power against local 
 
  
  
- 
+<br> <br><br>
 ######### Detailed Instruction for Reproduction of the Empirical/Simulation Results #########
 
 Empirical results: :
