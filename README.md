@@ -24,7 +24,7 @@ Int_integ_sim_size_power_properties_demeaned_revision.r: size and power of the t
 
 Int_integ_sim_size_power_properties_local_power_d_revision: power against local alternatives
 
-CV1.Rdata: Pre-computed critical values for various quantiles which are used for the Canadian yield curve example (to compute approximate the p-values). 
+CV1.Rdata: Critical values for various quantiles which are used for the Canadian yield curve example (to compute approximate the p-values). 
 
  
  
