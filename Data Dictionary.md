@@ -22,7 +22,7 @@ This repository contains two primary datasets used for the replication study. Be
 ### File Naming Convention
 - **Numeric Prefix (1–22):** Indicates the **Region Code** (see mapping below).
 - **Suffix (m/f):** Denotes gender (**m** for Male, **f** for Female).
-- *Example: `1f.csv` contains mortality data for females in Île de France.*
+- *Example: `1f.txt` contains mortality data for females in Île de France.*
 
 ### Region Code Mapping
 | Code | Region Name | Code | Region Name |
