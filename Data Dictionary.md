@@ -2,7 +2,6 @@
 
 This repository contains two primary datasets used for the replication study. Below are the detailed definitions for each variable and the nature of the observations.
 
----
 
 ## 1. Yield Curve Dataset
 **Definition of Observation:** Each row represents a daily snapshot of the zero-coupon yield curve based on market closing prices for a specific business day.
