@@ -1,11 +1,19 @@
 # R code for "Testing for integer integration in functional time series"
 
 ---
-🛠 Setup Instruction
-To reproduce the results, please ensure the following data structure is set up:
-Create a folder named data in the project root directory.
-Unzip the contents of data.zip into the newly created data folder.
-The final structure should look like: data/Canadian_daily_yields.csv and data/NUT2/.
+# Setup Instructions for Reproducibility
+
+Before running any scripts, please ensure your project environment is set up as follows:
+
+### 1. Data Preparation
+All data files must be placed in a directory named `data` at the project root.
+* **Step 1:** Create a folder named `data` in the same directory as this README.
+* **Step 2:** Locate the provided `data.zip` file.
+* **Step 3:** Unzip the contents of `data.zip` directly into the `data` folder.
+  
+> **Note:** After unzipping, the file paths should look like this:
+> - `data/Canadian_daily_yields.csv`
+> - `data/NUT2/1f.txt`, `data/NUT2/1m.txt`, etc.
 
 ## 📂 Files and Scripts
 
