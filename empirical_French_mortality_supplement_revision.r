@@ -1,6 +1,5 @@
 ## Loading packages
-library(fda);library(tseries);library(sandwich);library(sde);library(variables);library(basefun);library(polynom);library(fracdiff);library(LongMemoryTS);library(arfima)
-
+source("load_packages.r")
 
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
@@ -844,5 +843,6 @@ teststat3
 if (teststat3 > qu) {print("Reject at upper tail")}
 if (teststat3 < ql) {print("Reject at lower tail")}
 if (teststat3 > ql & teststat3 <qu) {print("Accept")}
+
 
 
