@@ -4,7 +4,6 @@
 ## Loading packages
 
 source("load_packages.r")
-setwd("Path")
 
 inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
@@ -203,5 +202,6 @@ correct_set3=cbind(correct_set3,cs3)
 round(colSums(correct_set1)/sum(d_rand<0),digits=3)
 round(colSums(correct_set2)/sum(0<d_rand & d_rand<1),digits=3)
 round(colSums(correct_set3)/sum(d_rand>1),digits=3)
+
 
 
