@@ -1,9 +1,8 @@
 ## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
-## Loading packages
-
-source("load_packages.r")
+source("load_packages.r") 
+# - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -211,6 +210,7 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
