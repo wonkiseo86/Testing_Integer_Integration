@@ -4,7 +4,6 @@
 ## Loading packages
 
 source("load_packages.r")
-setwd("Path")
 
 inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
@@ -289,3 +288,4 @@ legend("top", legend = paste0("T = ", T_vals),
 
 # Close the PNG device
 dev.off()
+
