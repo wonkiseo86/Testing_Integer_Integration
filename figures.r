@@ -3,7 +3,9 @@
 #########################################
 #### Figure 1: Canadian Yield Curves ####
 #########################################
-source("load_packages.r")
+source("load_packages.r") 
+# - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+
 load("CV1.Rdata") 
 data_raw   = read.csv("data/Canadian_daily_yields.csv")
 data_raw=as.matrix(data_raw[,2:ncol(data_raw)])
@@ -33,8 +35,8 @@ plot(fts(grid_point, x_mat), xlab = "Maturity", ylab = "Zero-coupon bond")
 #########################################################
 ## Figure 2: French Mortality Rates and functional ACF ##
 #########################################################
-
-source("load_packages.r")
+source("load_packages.r") 
+# - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
