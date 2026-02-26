@@ -25,7 +25,8 @@ All data files must be placed in a directory named `data` at the project root.
 * **empirical_canadian_yield.r**: Study on the integration property of Canadian yield curves
 * **empirical_French_mortality_revision.r**: Study on the integration property of French age-specific mortality rates
 * **empirical_French_mortality_Supplement_revision.r**: Supplementary results on French age-specific mortality rates
-
+* **figures.r**: Create Figures 1 and 2
+* 
 ### Simulation Study Scripts
 * **Int_integ_sim_accuracy_fraction_revision.r**: Accuracy of the testing procedure when the DGP is fractionally-integrated
 * **Int_integ_sim_accuracy_integer_revision.r**: Accuracy of the testing procedure when the DGP is integer-integrated
