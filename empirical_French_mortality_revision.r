@@ -30,8 +30,22 @@ female=read.table("data/NUT2/21f.txt",header=TRUE,sep=";",dec=","); male=read.ta
 female=read.table("data/NUT2/22f.txt",header=TRUE,sep=";",dec=","); male=read.table("data/NUT2/22m.txt",header=TRUE,sep=";",dec=","); hhj=hhj+1;miny=min(female[,1]);maxy=max(female[,1]); data1=NULL;data2=NULL;yy=miny;for (jjj in miny:maxy){data1=rbind(data1,female[(female[,1]==jjj),index]);data2=rbind(data2,male[(male[,1]==jjj),index])};fseries[,,hhj]=data1; mseries[,,hhj]=data2
 
 inner = dget("auxiliary/inprod.R")
-lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
+# - usage: inner(a,b,c)
+# - Description: Approximates the L2 inner product \int a(u)b(u) du using the Trapezoidal Rule for numerical integration.
+# - Inputs:
+#    a, b: Function values evaluated on grid 'c'.
+#    c: Regularly spaced grid points (Numeric vector).
+# - Output: Numeric scalar (Approximated integral).
+# - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
 
+lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
+# - usage: lr_var(u, kernel)
+# - Desc: Computes the long-run covariance matrix (Omega) required for test statistics.
+# - Inputs: 
+#    u: Input data matrix
+#    kernel: Kernel type index 
+# - Output: A list containing 'omega' (the estimated long-run covariance matrix).
+# - Assumptions: Bartlett kernel is used. 
 # plot
 
 require(LaplacesDemon)
@@ -280,5 +294,6 @@ result
 result2
 
 ## Reported numbers 0.5,1.0 and 1.5 represent d in (0,1), d=1, and d in (1,2), respectively.  
+
 
 
