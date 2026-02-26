@@ -7,6 +7,14 @@ data_raw   = read.csv("data/Canadian_daily_yields.csv")
 data_raw=as.matrix(data_raw[,2:ncol(data_raw)])
 
 inner = dget("auxiliary/inprod.R")
+# - usage: inner(a,b,c)
+# - Description: Approximates the L2 inner product \int a(u)b(u) du using the Trapezoidal Rule for numerical integration.
+# - Inputs:
+#    a, b: Function values evaluated on grid 'c'.
+#    c: Regularly spaced grid points (Numeric vector).
+# - Output: Numeric scalar (Approximated integral).
+# - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
 uband=1/5
