@@ -1,6 +1,11 @@
 # R code for "Testing for integer integration in functional time series"
 
 ---
+🛠 Setup Instruction
+To reproduce the results, please ensure the following data structure is set up:
+Create a folder named data in the project root directory.
+Unzip the contents of data.zip into the newly created data folder.
+The final structure should look like: data/Canadian_daily_yields.csv and data/NUT2/.
 
 ## 📂 Files and Scripts
 
