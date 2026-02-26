@@ -20,11 +20,6 @@ TTT=T_sample
 x_mat=t(data_raw)
 nt=nrow(x_mat)
 
-# figure
-grid_point = seq(0.25, 30, by = 0.25)
-savefig("yield", width = 12, height = 10, toplines = 0.8, type = "png")
-plot(fts(grid_point, x_mat), xlab = "Maturity", ylab = "Zero-coupon bond")
-dev.off()
 
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
