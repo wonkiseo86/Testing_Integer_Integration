@@ -5,7 +5,7 @@
 
 Before running any scripts, please ensure your project environment is set up as follows:
 
-### 1. Data Preparation
+### Data Preparation
 All data files must be placed in a directory named `data` at the project root.
 * **Step 1:** Create a folder named `data` in the same directory as this README.
 * **Step 2:** Locate the provided `data.zip` file.
