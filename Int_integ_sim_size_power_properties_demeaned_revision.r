@@ -4,7 +4,6 @@
 ## Loading packages
 
 source("load_packages.r")
-setwd("Path")
 
 inner = dget("auxiliary/inprod.R")
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
@@ -200,3 +199,4 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
