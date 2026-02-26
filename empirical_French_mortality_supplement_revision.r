@@ -1,5 +1,6 @@
 ## Loading packages
-source("load_packages.r")
+source("load_packages.r") 
+# - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
@@ -858,6 +859,7 @@ teststat3
 if (teststat3 > qu) {print("Reject at upper tail")}
 if (teststat3 < ql) {print("Reject at lower tail")}
 if (teststat3 > ql & teststat3 <qu) {print("Accept")}
+
 
 
 
