@@ -2,7 +2,6 @@
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
 source("load_packages.r")
-setwd("Path")
 load("CV1.Rdata") 
 data_raw   = read.csv("data/Canadian_daily_yields.csv")
 data_raw=as.matrix(data_raw[,2:ncol(data_raw)])
