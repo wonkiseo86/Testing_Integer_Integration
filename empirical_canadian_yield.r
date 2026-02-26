@@ -16,6 +16,13 @@ inner = dget("auxiliary/inprod.R")
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
+# - usage: lr_var(u, kernel)
+# - Desc: Computes the long-run covariance matrix (Omega) required for test statistics.
+# - Inputs: 
+#    u: Input data matrix
+#    kernel: Kernel type index 
+# - Output: A list containing 'omega' (the estimated long-run covariance matrix).
+# - Assumptions: Bartlett kernel is used. 
 
 uband=1/5
 
