@@ -112,4 +112,8 @@
 #### 9. Table 8 of the Supplementary Material
 * **Script:** `Int_integ_sim_size_power_properties_local_power_d_revision.r`
 * **Description:**
-    *
+    * (i) **Note:** Results across various values of T and c are obtained together for each value of b (= 0.15, 0.6).
+    * (ii) Set `uband=1/4`. Then, set `bdd=0.15` (resp. `bdd=0.6`) for upper (resp. lower) rows.
+
+#### 10. Figure 1 of the Supplementary Material
+* Produced from the results for Tables 6-8.
