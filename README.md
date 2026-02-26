@@ -69,7 +69,13 @@ All data files must be placed in a directory named `data` at the project root.
 * **Description:**
     * (i) Results for the subregions except the 9th region (Alsace) are obtained using `empirical_French_mortality_revision.r`. Set the `transformation` parameter as `transformation=4`.
     * (ii) Results for the 9th region (Alsace) are obtained using Section 1 of `empirical_French_mortality_supplement_revision.r`. Set the `transformation` parameter as `transformation=4`.
-
+ 
+#### 5. Figures 1 and 2
+* **Data Required:** `Canadian_daily_yields.csv` and Datasets in the `NUT2` folder
+* **Scripts:** `figures.r`
+* **Description:**
+    * Figures 1 and 2 are generated from the code.
+      
 ---
 
 ### 🧪 Simulation Results
