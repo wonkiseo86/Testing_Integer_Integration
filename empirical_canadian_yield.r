@@ -1,4 +1,4 @@
-## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
+## Description: codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
 source("load_packages.r")
