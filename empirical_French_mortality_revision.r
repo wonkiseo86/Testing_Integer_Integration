@@ -37,13 +37,6 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 require(LaplacesDemon)
 require(fdaACF)
 
-#savefig("rainbow", width = 12, height = 10, toplines = 0.8, type = "png")
-#plot(fts(0:105,t(logit(fseries[,,1]))), xlab = "Age", ylab = "Logit transformation of mortality rate")
-#dev.off()
-
-#savefig("acf", width = 12, height = 10, toplines = 0.8, type = "png")
-#obtain_FACF(logit(replace(fseries[,,1], which(fseries[,,1]==0), 10^-6)), v = 0:105, nlags = 20)
-#dev.off()
 
 ## Data preprocessing
 X_series=fseries
@@ -287,4 +280,5 @@ result
 result2
 
 ## Reported numbers 0.5,1.0 and 1.5 represent d in (0,1), d=1, and d in (1,2), respectively.  
+
 
