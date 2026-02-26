@@ -1,5 +1,6 @@
 ## Loading packages
-source("load_packages.r")
+source("load_packages.r") 
+# - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
@@ -294,6 +295,7 @@ result
 result2
 
 ## Reported numbers 0.5,1.0 and 1.5 represent d in (0,1), d=1, and d in (1,2), respectively.  
+
 
 
 
