@@ -125,7 +125,6 @@ zz0=zz0
 zz0=t(zz0)
 zz=zz0
 
-## second difference ##
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
 TTT=TTT-1
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
