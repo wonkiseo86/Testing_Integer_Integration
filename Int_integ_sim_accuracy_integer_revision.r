@@ -23,15 +23,27 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+# - Note: Basic parameter setup
  bdd=0.6;  ###########################################################################################
  bdd2=0.15; ## Not Used
-addmargin=0.01
+ addmargin=0.01
+
+
+# - Note: Function sim_DGP
+# - usage: sim_DGP(seed_number, sample_size, d, grid_number)
+# - Desc: Generate fractionally integrated functional time series
+# - Inputs: 
+#    seed_number: Input seed number
+#    sample_size: length of time series
+#    d: memory parameter
+#    grid_number: the number of grids where functions are evaluated
+# - Output: fractionally integrated functional time series 
+# - Assumptions: Fourier basis functions are used to construct functional time series. 
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
  {
  bunin=0
  T=sample_size+bunin; nt=grid_number; t = (0:(nt-1))/(nt-1); d2=d*(d>-1/2 & d<1/2) + (0.25)*(d>=1/2);  
 
- 
  YY=NULL
  for (da in c(d2,runif(1,max(d2-0.2,-0.5),max(d2-0.1,-0.5+addmargin))))
  #for (da in c(d2,max(d2-0.2,-0.4)))
@@ -81,11 +93,12 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  }
  
 
+
+# - Note: Basic parameter setup
 decrea=0.5
 margin=0
 cutsd=1
 uband=1/5 #1/3 and 1/4
-
 
 ql=0.04467116 
 qu=2.12588475 
@@ -95,9 +108,6 @@ qu=2.12588475
 ql2=qnorm(0.025)
 qu2=qnorm(0.975)
 bw1=0.65
-
-
-
 
 #d_sim = 0.6,0.8,1,1.2,1.4
 #d_sim = -0.4,-0.2,0,0.2,0.4
@@ -109,13 +119,18 @@ d_rand=sample(c(0,1),maxiter,replace=TRUE)
 T_sample=c(125,250,500,750,1000)
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
 
-
 TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
+
+
+# - Simulation loop begins
 for(iijj in 1:maxiter)
 {
 d_sim=d_rand[iijj]
 T_max=max(T_sample)
+
+	
+# - Note: Construct basis functions to be used
 lbnumber2=26; nt = 150 ; t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -133,9 +148,12 @@ ycoef=t(apply(xcoef,1, cumsum))
 xcoef=t(xcoef)
 ycoef=t(ycoef)
 
-
+	
+# - Note: sub-loop to consder various sample sizes
 for (TTT in (T_sample))
 {
+
+# - Note: test for each sample size 
 bandw=floor(TTT^(uband))
 
 zz0=t(xcoef[1:TTT,])
@@ -182,6 +200,10 @@ if (teststat > qu){TEST_RESULT[iijj,which((TTT)==T_sample)]=0.25}
 if(seed_number%%100==0){print(seed_number)}
 }
 
+
+
+
+# - Note: Report results
 true_0=which(d_rand==0)
 true_1=which(d_rand==1) 
 
@@ -207,6 +229,7 @@ correct_set3=cbind(correct_set3,cs3)
 round(colSums(correct_set1)/length(d_rand),digits=3)
 round(colSums(correct_set2)/sum(d_rand==0),digits=3)
 round(colSums(correct_set3)/sum(d_rand==1),digits=3)
+
 
 
 
