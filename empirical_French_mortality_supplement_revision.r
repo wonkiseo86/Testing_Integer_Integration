@@ -2,6 +2,8 @@
 source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
+
+# - Note: Load data 
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
 mseries = array(0,dim = c(121,106,n_sub))
@@ -56,11 +58,10 @@ qu=2.12588475
 transformation=1  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
 
 
-
-
 ######################################################################################
 ### Section 1: V0 and V1 tests for the NINTH subregion (female & male)####
 ######################################################################################
+# - Note: Setup for female data
 X_series=fseries[21:121,,9]
 findex=NULL
 mindex=NULL
@@ -69,20 +70,18 @@ transformation=4 ## 1 for the results for Alsace in Table 5 of the main manuscri
 
 result=NULL 
 
-
-
+# - Note: Data preprocessing
 x_series =X_series
 subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
-
 
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
 
 
-
+# - Note: Transformation of the female data following the "transformation" parameter
 if (transformation==1){
 x_mat=t(log(x_series/(1-x_series)))}
 
@@ -95,12 +94,12 @@ x_mat=t(x_series)}
 if (transformation==4){
 x_mat=t(log(x_series))}
 
-
 T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
 
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -109,7 +108,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note:Implementatino of V0 test (female data)
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -134,13 +133,11 @@ eval_vx0= t(ev0)%*%vx0%*%ev0
 eval_vx1= t(ev0)%*%vx1%*%ev0
 teststat=(eval_vx1/eval_vx0)
 
-
 if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
-
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for female data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -172,19 +169,21 @@ if (teststat2 < ql) {result=append(result,0.5)}
 
 
 
-
+# - Note: Setup for male data
 X_series=mseries[21:121,,9]
 result2=NULL 
 
+# - Note: Data preprocessing
 x_series = X_series
 subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
 
-
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
+
+# - Note: Transformation of the female data following the "transformation" parameter
 if (transformation==1){
 x_mat=t(log(x_series/(1-x_series)))}
 
@@ -202,6 +201,7 @@ TTT=T_sample
 nt=nrow(x_mat)
 
 
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -210,7 +210,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: Implementation of the V0 test (male data)
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -239,9 +239,8 @@ teststat=(eval_vx1/eval_vx0)
 if (teststat < ql) {result2=append(result2,-1)}
 if (teststat > ql & teststat <qu) {result2=append(result2,0)}
 
-
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for male data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -269,8 +268,13 @@ if (teststat2 > ql & teststat2 <qu) {result2=append(result2,1)}
 if (teststat2 > qu) {result2=append(result2,1.5)}
 if (teststat2 < ql) {result2=append(result2,0.5)}
 
+
+# - Note: Report results collectively.
 result
 result2
+
+
+
 
 
 
@@ -282,24 +286,24 @@ result2
 ######################################################################################
 ## This part is to just confirm that d = 2 or less for the data set of log mortality rates
 
+# - Note: Basic setup and data preprocessing
 X_series=fseries[1:121,,1]
 findex=NULL
 mindex=NULL
 
 transformation = 1
-
 result=NULL 
-
 x_series =X_series
 subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
 
-
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
-#x_mat=t(x_series)
+
+
+# - Note: Transformation of the female data following the "transformation" parameter
 if (transformation==1){
 x_mat=t(log(x_series/(1-x_series)))}
 
@@ -312,12 +316,12 @@ x_mat=t(x_series)}
 if (transformation==4){
 x_mat=t(log(x_series))}
 
-
 T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
 
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -326,7 +330,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: Implementation of the V0 test (female)
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -351,13 +355,12 @@ eval_vx0= t(ev0)%*%vx0%*%ev0
 eval_vx1= t(ev0)%*%vx1%*%ev0
 teststat=(eval_vx1/eval_vx0)
 
-
 if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
 
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for female data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -384,7 +387,8 @@ if (teststat2 > ql & teststat2 <qu) {result=append(result,1)}
 if (teststat2 > qu) {result=append(result,1.5)}
 if (teststat2 < ql) {result=append(result,0.5)}
 
-### V_2 test## 
+
+# - Note: V2 test for female data when V1 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -396,11 +400,9 @@ zz0=zz0 #-rowMeans(zz0)
 zz0=t(zz0)
 zz=zz0
 
-## second difference ##
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
 TTT=TTT-1
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
-######################################################
 
 zz2=apply(zz0,2, cumsum)
 v0=lrvar(zz,kernel=2)$omega / TTT
@@ -427,6 +429,7 @@ if (teststat3 > ql & teststat3 <qu) {print("Accept")}
 ######################################################################################
 ## This part is to just confirm that d = 2 or less for the data set of log mortality rates
 
+# - Note: Basic setup and data preprocessing
 X_series=fseries[1:121,,7]
 findex=NULL
 mindex=NULL
@@ -440,11 +443,12 @@ subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
 
-
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
-#x_mat=t(x_series)
+
+
+# - Note: Transformation of the female data following the "transformation" parameter
 if (transformation==1){
 x_mat=t(log(x_series/(1-x_series)))}
 
@@ -457,12 +461,12 @@ x_mat=t(x_series)}
 if (transformation==4){
 x_mat=t(log(x_series))}
 
-
 T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
 
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -471,7 +475,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: Implementation of V0 test for female data 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -496,13 +500,12 @@ eval_vx0= t(ev0)%*%vx0%*%ev0
 eval_vx1= t(ev0)%*%vx1%*%ev0
 teststat=(eval_vx1/eval_vx0)
 
-
 if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
 
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for female data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -529,7 +532,8 @@ if (teststat2 > ql & teststat2 <qu) {result=append(result,1)}
 if (teststat2 > qu) {result=append(result,1.5)}
 if (teststat2 < ql) {result=append(result,0.5)}
 
-### V_2 test## 
+
+# - Note: V2 test for female data when V1 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -541,11 +545,9 @@ zz0=zz0 #-rowMeans(zz0)
 zz0=t(zz0)
 zz=zz0
 
-## second difference ##
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
 TTT=TTT-1
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
-######################################################
 
 zz2=apply(zz0,2, cumsum)
 v0=lrvar(zz,kernel=2)$omega / TTT
@@ -573,12 +575,13 @@ if (teststat3 > ql & teststat3 <qu) {print("Accept")}
 ######################################################################################
 ## This part is to just confirm that d = 2 or less for the data set of log mortality rates
 
+
+# - Note: Basic parameter setup and data preprocessing
 X_series=mseries[1:121,,21]
 findex=NULL
 mindex=NULL
 
 transformation = 1
-
 result=NULL 
 
 x_series =X_series
@@ -586,11 +589,11 @@ subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
 
-
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
-#x_mat=t(x_series)
+
+# - Note: Transformation of the male data following the "transformation" parameter
 if (transformation==1){
 x_mat=t(log(x_series/(1-x_series)))}
 
@@ -603,12 +606,12 @@ x_mat=t(x_series)}
 if (transformation==4){
 x_mat=t(log(x_series))}
 
-
 T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
 
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -617,7 +620,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: Implementation of the V0 test (male data)
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -642,13 +645,12 @@ eval_vx0= t(ev0)%*%vx0%*%ev0
 eval_vx1= t(ev0)%*%vx1%*%ev0
 teststat=(eval_vx1/eval_vx0)
 
-
 if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
 
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for male data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -675,7 +677,8 @@ if (teststat2 > ql & teststat2 <qu) {result=append(result,1)}
 if (teststat2 > qu) {result=append(result,1.5)}
 if (teststat2 < ql) {result=append(result,0.5)}
 
-### V_2 test## 
+
+# - Note: V2 test for female data when V1 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -687,11 +690,9 @@ zz0=zz0 #-rowMeans(zz0)
 zz0=t(zz0)
 zz=zz0
 
-## second difference ##
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
 TTT=TTT-1
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
-######################################################
 
 zz2=apply(zz0,2, cumsum)
 v0=lrvar(zz,kernel=2)$omega / TTT
@@ -722,7 +723,7 @@ region_index=21   ## Change this to "1,5,7,9,13,21 for female" & "1,21 for male"
 gender=2 # 1 for female, 2 for male
 transformation=4 
 
-
+# - Note: Basic parameter setup and data preprocessing
 if(gender==1 & region_index==9){X_series=fseries[21:121,,region_index]}
 if(gender==1 & region_index!=9){X_series=fseries[1:121,,region_index]}
 if(gender==2 & region_index==9){X_series=mseries[21:121,,region_index]}
@@ -731,7 +732,6 @@ if(gender==2 & region_index!=9){X_series=mseries[1:121,,region_index]}
 findex=NULL
 mindex=NULL
 
-
 result=NULL 
 
 x_series =X_series
@@ -739,11 +739,11 @@ subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
 
-
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
-#x_mat=t(x_series)
+
+# - Note: Transformation of the female data following the "transformation" parameter
 if (transformation==1){
 x_mat=t(log(x_series/(1-x_series)))}
 
@@ -756,12 +756,12 @@ x_mat=t(x_series)}
 if (transformation==4){
 x_mat=t(log(x_series))}
 
-
 T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
 
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -770,7 +770,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: Implementatino of V0 test 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -795,13 +795,11 @@ eval_vx0= t(ev0)%*%vx0%*%ev0
 eval_vx1= t(ev0)%*%vx1%*%ev0
 teststat=(eval_vx1/eval_vx0)
 
-
 if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
-
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -828,7 +826,8 @@ if (teststat2 > ql & teststat2 <qu) {result=append(result,1)}
 if (teststat2 > qu) {result=append(result,1.5)}
 if (teststat2 < ql) {result=append(result,0.5)}
 
-### V_2 test## 
+
+# - Note: V2 test for data when V1 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -840,11 +839,9 @@ zz0=zz0 #-rowMeans(zz0)
 zz0=t(zz0)
 zz=zz0
 
-## second difference ##
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
 TTT=TTT-1
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
-######################################################
 
 zz2=apply(zz0,2, cumsum)
 v0=lrvar(zz,kernel=2)$omega / TTT
@@ -859,6 +856,7 @@ teststat3
 if (teststat3 > qu) {print("Reject at upper tail")}
 if (teststat3 < ql) {print("Reject at lower tail")}
 if (teststat3 > ql & teststat3 <qu) {print("Accept")}
+
 
 
 
