@@ -21,11 +21,10 @@ CV2=NULL
 
 #SET=c(0.95)###################################################################
 
-
-        aaa=NULL
-		bbb=NULL
+aaa=NULL
+bbb=NULL
 		
- for(nnn in 1:outeriter)
+for(nnn in 1:outeriter)
 {
             atem=as.vector(BM(x=0, t0=0, T=1, N=leng-1))
             btem=as.vector(BBridge(x=0, t0=0, T=1, N=leng-1))
@@ -38,8 +37,5 @@ print(nnn)
 quantile(CV1,c(0.025,0.975))
 quantile(CV2,c(0.025,0.975))
 
-
-
-
-
 quantile_grid=quantile(CV1,seq(0,1,0.001))
+
