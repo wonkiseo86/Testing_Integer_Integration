@@ -3,7 +3,7 @@
 ##################
 
 # List of required packages
-packages <- c("fda", "tseries", "sandwich", "sde", "variables", "basefun", "polynom", "fracdiff", "LongMemoryTS", "arfima")
+packages <- c("fda", "tseries", "sandwich", "sde", "variables", "basefun", "polynom", "fracdiff", "arfima")
 
 # Install missing packages
 new_packages <- packages[!(packages %in% installed.packages()[, "Package"])]
