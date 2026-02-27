@@ -1,8 +1,11 @@
 ## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
-source("load_packages.r") 
+
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
+
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -12,6 +15,8 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -23,10 +28,14 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+
+
 # - Note: Basic parameter setup
  bdd=0.6;  ###########################################################################################
  bdd2=0.15; ## Not Used
  addmargin=0.01
+
+
 
 
 # - Note: Function sim_DGP
@@ -94,6 +103,7 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  
 
 
+
 # - Note: Basic parameter setup
 decrea=0.5
 margin=0
@@ -123,7 +133,9 @@ TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
 
 
-# - Simulation loop begins
+
+
+# - Note: Simulation loop begins
 for(iijj in 1:maxiter)
 {
 d_sim=d_rand[iijj]
@@ -203,6 +215,7 @@ if(seed_number%%100==0){print(seed_number)}
 
 
 
+
 # - Note: Report results
 true_0=which(d_rand==0)
 true_1=which(d_rand==1) 
@@ -229,6 +242,7 @@ correct_set3=cbind(correct_set3,cs3)
 round(colSums(correct_set1)/length(d_rand),digits=3)
 round(colSums(correct_set2)/sum(d_rand==0),digits=3)
 round(colSums(correct_set3)/sum(d_rand==1),digits=3)
+
 
 
 
