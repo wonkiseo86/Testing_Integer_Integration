@@ -1,6 +1,7 @@
 ## Loading packages
-source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
 
 
 # - Note: Load data 
@@ -32,6 +33,8 @@ female=read.table("data/NUT2/20f.txt",header=TRUE,sep=";",dec=","); male=read.ta
 female=read.table("data/NUT2/21f.txt",header=TRUE,sep=";",dec=","); male=read.table("data/NUT2/21m.txt",header=TRUE,sep=";",dec=","); hhj=hhj+1;miny=min(female[,1]);maxy=max(female[,1]); data1=NULL;data2=NULL;yy=miny;for (jjj in miny:maxy){data1=rbind(data1,female[(female[,1]==jjj),index]);data2=rbind(data2,male[(male[,1]==jjj),index])};fseries[,,hhj]=data1; mseries[,,hhj]=data2
 female=read.table("data/NUT2/22f.txt",header=TRUE,sep=";",dec=","); male=read.table("data/NUT2/22m.txt",header=TRUE,sep=";",dec=","); hhj=hhj+1;miny=min(female[,1]);maxy=max(female[,1]); data1=NULL;data2=NULL;yy=miny;for (jjj in miny:maxy){data1=rbind(data1,female[(female[,1]==jjj),index]);data2=rbind(data2,male[(male[,1]==jjj),index])};fseries[,,hhj]=data1; mseries[,,hhj]=data2
 
+
+
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
 # - Description: Approximates the L2 inner product \int a(u)b(u) du using the Trapezoidal Rule for numerical integration.
@@ -40,6 +43,8 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -50,6 +55,8 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Output: A list containing 'omega' (the estimated long-run covariance matrix).
 # - Assumptions: Bartlett kernel is used. 
 # plot
+
+
 
 
 # - Note: Data preprocessing
@@ -71,20 +78,23 @@ if (sum(is.na(check))>0){mindex=append(mindex,jj)}
 }
 
 
+
+
+
 ######################################################################################
 ### V0 and V1 tests for the subregions except 9th regtion (female & male)####
 ### Results for 9th region can be obtained using the supplementary code  ####
 ######################################################################################
 
-
 #### Transformations#####################################################################
 transformation=1  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
-
 
 # - Note: Basic setup
 uband=1/5
 ql=0.04467116 
 qu=2.12588475 
+
+
 
 
 # - Note: Transformation of the female data following the "transformation" parameter
@@ -98,7 +108,6 @@ x_series = X_series[,,jj]
 subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
-
 
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
@@ -115,10 +124,11 @@ x_mat=t(x_series)}
 if (transformation==4){
 x_mat=t(log(x_series))}
 
-
 T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
+
+
 
   
 # - Note: Construct basis functions to be used
@@ -130,6 +140,8 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
+
+  
 # - Note: V_0 test for female data 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
@@ -159,7 +171,9 @@ if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
 if (teststat > qu){
+  
 # - Note: V1 test for female data when V0 test is rejected at an upper tail
+  
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -202,7 +216,6 @@ subindex=is.na(rowSums(x_series))
 if (sum(subindex)>=1){rendpoint=max(which(subindex==1))} else{rendpoint=0}
 x_series=x_series[(rendpoint+1):nrow(x_series),]
 
-
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
 
@@ -222,6 +235,8 @@ T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
+
+
   
 # - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
@@ -232,6 +247,8 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
+
+  
 # - Note: V_0 test for male data 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
@@ -263,7 +280,9 @@ if (teststat > ql & teststat <qu) {result2=append(result2,0)}
 
 
 if (teststat > qu){
+  
 # - Note: V1 test for male data when V0 test is rejected at an upper tail
+  
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -292,11 +311,14 @@ if (teststat2 > qu) {result2=append(result2,1.5)}
 if (teststat2 < ql) {result2=append(result2,0.5)}
 }
 
+
+
 # - Note: Report results collectively.
 result
 result2
 
 ## Reported numbers 0.5,1.0 and 1.5 represent d in (0,1), d=1, and d in (1,2), respectively.  
+
 
 
 
