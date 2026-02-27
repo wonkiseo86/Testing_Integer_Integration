@@ -23,10 +23,23 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+
+# - Note: Basic parameter setup
 bdd=0.6;  ###########################################################################################
- bdd2=0.15;  ##### Not Used
- 
+bdd2=0.15;  ##### Not Used
 addmargin=0.01
+
+
+# - Note: Function sim_DGP
+# - usage: sim_DGP(seed_number, sample_size, d, grid_number)
+# - Desc: Generate fractionally integrated functional time series
+# - Inputs: 
+#    seed_number: Input seed number
+#    sample_size: length of time series
+#    d: memory parameter
+#    grid_number: the number of grids where functions are evaluated
+# - Output: fractionally integrated functional time series 
+# - Assumptions: Fourier basis functions are used to construct functional time series. 
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
  {
  bunin=0
@@ -80,12 +93,13 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  
      return(data1)
  }
- 
+
+
+# - Note: Basic parameter setup
 decrea=0.5
 margin=0
 cutsd=1
 uband=1/5 #1/3 and 1/4
-
 
 ql=0.04467116 
 qu=2.12588475 
@@ -95,9 +109,6 @@ qu=2.12588475
 ql2=qnorm(0.025)
 qu2=qnorm(0.975)
 bw1=0.65
-
-
-
 
 #d_sim = 0.6,0.8,1,1.2,1.4
 #d_sim = -0.4,-0.2,0,0.2,0.4
@@ -115,13 +126,17 @@ d_rand=NULL; for(i in 1:maxiter){rra=sample(1:4,1,replace=TRUE);if (rra==1){d_ra
 T_sample=c(125,250,500,750,1000)
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
 
-
 TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
+
+
+# - Note: Simulation loop begins
 for(iijj in 1:maxiter)
 {
 d_sim=d_rand[iijj]
 T_max=max(T_sample)
+
+# - Note: Construct basis functions to be used	
 lbnumber2=26; nt = 150 ; t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -129,6 +144,9 @@ for (i in 1:(lbnumber2/2)){
   LBF[,2*i] = sqrt(2)*cos(2*pi*i*t)/sqrt(inner(sqrt(2)*cos(2*pi*i*t),sqrt(2)*cos(2*pi*i*t),t))
 }
 
+
+
+# - Note: Generate functional time series)	
 seed_number=iijj
 x_mat=sim_DGP(1000*seed_number, T_max, d_sim ,nt)
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
@@ -140,8 +158,10 @@ xcoef=t(xcoef)
 ycoef=t(ycoef)
 
 
+# - Note: sub-loop to consder various sample sizes
 for (TTT in (T_sample))
 {
+# - Note: test for each sample size 	
 bandw=floor(TTT^(uband))
 
 zz0=t(xcoef[1:TTT,])
@@ -186,9 +206,10 @@ if (teststat > qu){TEST_RESULT[iijj,which((TTT)==T_sample)]=0.25}
 
 }
 if(seed_number%%100==0){print(seed_number)}
-
 }
 
+
+# - Note: Report results
 true_0a=which(d_rand<0)
 true_0b=which(d_rand>0 & d_rand < 1/2)
 true_1a=which(d_rand>0 & d_rand < 1)
@@ -216,6 +237,7 @@ correct_set3=cbind(correct_set3,cs3)
 round(colSums(correct_set1)/sum(d_rand<0),digits=3)
 round(colSums(correct_set2)/sum(0<d_rand & d_rand<1),digits=3)
 round(colSums(correct_set3)/sum(d_rand>1),digits=3)
+
 
 
 
