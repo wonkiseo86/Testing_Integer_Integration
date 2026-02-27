@@ -1,6 +1,8 @@
 ## Loading packages
-source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
+
 
 
 # - Note: Load data 
@@ -32,6 +34,9 @@ female=read.table("data/NUT2/20f.txt",header=TRUE,sep=";",dec=","); male=read.ta
 female=read.table("data/NUT2/21f.txt",header=TRUE,sep=";",dec=","); male=read.table("data/NUT2/21m.txt",header=TRUE,sep=";",dec=","); hhj=hhj+1;miny=min(female[,1]);maxy=max(female[,1]); data1=NULL;data2=NULL;yy=miny;for (jjj in miny:maxy){data1=rbind(data1,female[(female[,1]==jjj),index]);data2=rbind(data2,male[(male[,1]==jjj),index])};fseries[,,hhj]=data1; mseries[,,hhj]=data2
 female=read.table("data/NUT2/22f.txt",header=TRUE,sep=";",dec=","); male=read.table("data/NUT2/22m.txt",header=TRUE,sep=";",dec=","); hhj=hhj+1;miny=min(female[,1]);maxy=max(female[,1]); data1=NULL;data2=NULL;yy=miny;for (jjj in miny:maxy){data1=rbind(data1,female[(female[,1]==jjj),index]);data2=rbind(data2,male[(male[,1]==jjj),index])};fseries[,,hhj]=data1; mseries[,,hhj]=data2
 
+
+
+
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
 # - Description: Approximates the L2 inner product \int a(u)b(u) du using the Trapezoidal Rule for numerical integration.
@@ -40,6 +45,9 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -50,12 +58,19 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Output: A list containing 'omega' (the estimated long-run covariance matrix).
 # - Assumptions: Bartlett kernel is used. 
 
+
+
+
+# - Note: Basic parameter setup
 uband=1/5
 ql=0.04467116 
 qu=2.12588475 
 
 # Transformations#####################################################################
 transformation=1  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
+
+
+
 
 
 ######################################################################################
@@ -70,6 +85,9 @@ transformation=4 ## 1 for the results for Alsace in Table 5 of the main manuscri
 
 result=NULL 
 
+
+
+
 # - Note: Data preprocessing
 x_series =X_series
 subindex=is.na(rowSums(x_series))
@@ -78,6 +96,7 @@ x_series=x_series[(rendpoint+1):nrow(x_series),]
 
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
+
 
 
 
@@ -99,6 +118,9 @@ TTT=T_sample
 nt=nrow(x_mat)
 
 
+
+
+
 # - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
@@ -106,6 +128,9 @@ for (i in 1:(lbnumber2/2)){
   LBF[,2*i-1] = sqrt(2)*sin(2*pi*i*t) /sqrt(inner(sqrt(2)*sin(2*pi*i*t),sqrt(2)*sin(2*pi*i*t),t))
   LBF[,2*i] = sqrt(2)*cos(2*pi*i*t)/sqrt(inner(sqrt(2)*cos(2*pi*i*t),sqrt(2)*cos(2*pi*i*t),t))
 }
+
+
+
 
 
 # - Note:Implementatino of V0 test (female data)
@@ -137,7 +162,9 @@ if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
 if (teststat > qu){
+  
 # - Note: V1 test for female data when V0 test is rejected at an upper tail
+  
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -173,6 +200,10 @@ if (teststat2 < ql) {result=append(result,0.5)}
 X_series=mseries[21:121,,9]
 result2=NULL 
 
+
+
+
+
 # - Note: Data preprocessing
 x_series = X_series
 subindex=is.na(rowSums(x_series))
@@ -181,6 +212,8 @@ x_series=x_series[(rendpoint+1):nrow(x_series),]
 
 x_series = replace(x_series, which(x_series == 0), 10^-4)
 x_series = replace(x_series, which(x_series >= 1), 1-10^-4)
+
+
 
 
 # - Note: Transformation of the female data following the "transformation" parameter
@@ -201,6 +234,8 @@ TTT=T_sample
 nt=nrow(x_mat)
 
 
+
+
 # - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
@@ -208,6 +243,8 @@ for (i in 1:(lbnumber2/2)){
   LBF[,2*i-1] = sqrt(2)*sin(2*pi*i*t) /sqrt(inner(sqrt(2)*sin(2*pi*i*t),sqrt(2)*sin(2*pi*i*t),t))
   LBF[,2*i] = sqrt(2)*cos(2*pi*i*t)/sqrt(inner(sqrt(2)*cos(2*pi*i*t),sqrt(2)*cos(2*pi*i*t),t))
 }
+
+
 
 
 # - Note: Implementation of the V0 test (male data)
@@ -240,7 +277,9 @@ if (teststat < ql) {result2=append(result2,-1)}
 if (teststat > ql & teststat <qu) {result2=append(result2,0)}
 
 if (teststat > qu){
+  
 # - Note: V1 test for male data when V0 test is rejected at an upper tail
+  
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -267,6 +306,8 @@ if (teststat2 > ql & teststat2 <qu) {result2=append(result2,1)}
 
 if (teststat2 > qu) {result2=append(result2,1.5)}
 if (teststat2 < ql) {result2=append(result2,0.5)}
+
+
 
 
 # - Note: Report results collectively.
@@ -856,6 +897,7 @@ teststat3
 if (teststat3 > qu) {print("Reject at upper tail")}
 if (teststat3 < ql) {print("Reject at lower tail")}
 if (teststat3 > ql & teststat3 <qu) {print("Accept")}
+
 
 
 
