@@ -23,17 +23,27 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+# - Note: Basic parameter setup
  nonstat=1  ## 0 for V0 test, 1 for V1 test
  addmargin=0.01
  bdd=0.15;  ##### parameter "b" in the paper ##########
  bdd2=0.15; ## Not used
-  
+
+# - Note: Function sim_DGP
+# - usage: sim_DGP(seed_number, sample_size, d, grid_number)
+# - Desc: Generate fractionally integrated functional time series
+# - Inputs: 
+#    seed_number: Input seed number
+#    sample_size: length of time series
+#    d: memory parameter
+#    grid_number: the number of grids where functions are evaluated
+# - Output: fractionally integrated functional time series 
+# - Assumptions: Fourier basis functions are used to construct functional time series. 
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
  {
  bunin=0
  T=sample_size+bunin; nt=grid_number; t = (0:(nt-1))/(nt-1); d2=d*(d>-1/2 & d<1/2) + (0.25)*(d>=1/2);  
 
- 
  YY=NULL
  for (da in c(d2,runif(1,max(d2-0.2,-0.5),max(d2-0.1,-0.5+addmargin))))
  #for (da in c(d2,max(d2-0.2,-0.4)))
@@ -79,17 +89,17 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  LBFP=LBF[,rpert]
  data1=LBFP%*%YY
  
-     return(data1)
+ return(data1)
  }
  
 
 
 
+# - Note: Basic parameter setup
 decrea=0.5
 margin=0
 cutsd=1
 uband=1/5 #1/3 and 1/4
-
 
 ql=0.04467116 
 qu=2.12588475 
@@ -100,12 +110,8 @@ ql2=qnorm(0.025)
 qu2=qnorm(0.975)
 bw1=0.65
 
-
-
-
 #d_sim = 0.6,0.8,1,1.2,1.4
 #d_sim = -0.4,-0.2,0,0.2,0.4
-
 
 Dresults=NULL
 
@@ -115,18 +121,22 @@ Dset2=c(1-0.45,1-0.3,1-0.15,1,1.15,1.3,1.45)
 if(nonstat==1){DDset=Dset2}else{DDset=Dset1} 
 
 set.seed(99999)
+
+
+
+
+# - Simulation loop begins
 for(d_sim in DDset)  ##########################################
 {
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
-
-
 maxiter=2000
-
 T_sample=c(125,250,500,750,1000)
-
 T_max=max(T_sample)
 TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
+
+ 
+ # - Note: Construct basis functions to be used
 lbnumber2=26; nt = 150 ; t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -138,6 +148,7 @@ seed_number=1
 for (seed_number in 1:maxiter)
 {
 
+# - Note: Generate functional time series)
 x_mat=sim_DGP(1000*seed_number, T_max, d_sim ,nt)
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
 xcoef=hh
@@ -147,10 +158,11 @@ xcoef=t(xcoef)
 ycoef=t(ycoef)
 
 
-
-
+ # - Note: sub-loop to consder various sample sizes
 for (TTT in (T_sample))
 {
+
+# - Note: test for each sample size 
 bandw=floor(TTT^(uband))
 
 zz0=t(xcoef[1:TTT,])
@@ -162,7 +174,6 @@ zz2=apply(zz0,2, cumsum)
 vx_eigen = crossprod(zz2) / (TTT^2)
 eelements=eigen(vx_eigen)
 ev0=eelements$vectors[,1]  
-
 
 if(d_sim>1/2){zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] }
 zz2=apply(zz0,2, cumsum)
@@ -177,7 +188,6 @@ teststat=(eval_vx1/eval_vx0)
 
 xxcoef=xcoef[1:TTT,]-rowMeans(xcoef[1:TTT,])
 
-
 if(d_sim<1/2 & d_sim>-1/2){
 if(d_sim>0){corrind=1}
 if(d_sim<0){corrind=-1}
@@ -187,8 +197,6 @@ if(d_sim>=1/2){
 if(d_sim>1){corrind=1}
 if(d_sim<1){corrind=-1}
 if(d_sim==1){corrind=0} }
-
-
 
 TESTSTAT[seed_number,which(TTT==T_sample)]=teststat
 
@@ -201,14 +209,16 @@ if (teststat > qu){TEST_RESULT[seed_number,which((TTT)==T_sample)]=1}
 if(seed_number%%200==0){print(c(d_sim,sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number, TESTSTAT[seed_number,]))}
 }
 
+ 
+# - Note: Report results
 REPORT=rbind(REPORT,c(sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,5]==corrind)/seed_number))
 Dresults=rbind(Dresults,REPORT)
 }
 
 AA=t(Dresults)
-
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
