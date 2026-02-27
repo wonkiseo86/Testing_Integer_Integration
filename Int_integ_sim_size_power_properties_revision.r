@@ -1,8 +1,11 @@
 ## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
-source("load_packages.r") 
+
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
+
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -12,6 +15,8 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -23,11 +28,14 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+
 # - Note: Basic parameter setup
  nonstat=1  ## 0 for V0 test, 1 for V1 test
  addmargin=0.01
  bdd=0.15;  ##### parameter "b" in the paper ##########
  bdd2=0.15; ## Not used
+
+
 
 # - Note: Function sim_DGP
 # - usage: sim_DGP(seed_number, sample_size, d, grid_number)
@@ -95,6 +103,7 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
 
 
 
+
 # - Note: Basic parameter setup
 decrea=0.5
 margin=0
@@ -125,7 +134,8 @@ set.seed(99999)
 
 
 
-# - Simulation loop begins
+
+# - Note: Simulation loop begins
 for(d_sim in DDset)  ##########################################
 {
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
@@ -134,6 +144,8 @@ T_sample=c(125,250,500,750,1000)
 T_max=max(T_sample)
 TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
+
+
 
  
  # - Note: Construct basis functions to be used
@@ -147,8 +159,9 @@ for (i in 1:(lbnumber2/2)){
 seed_number=1
 for (seed_number in 1:maxiter)
 {
-
+ 
 # - Note: Generate functional time series)
+ 
 x_mat=sim_DGP(1000*seed_number, T_max, d_sim ,nt)
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
 xcoef=hh
@@ -158,11 +171,14 @@ xcoef=t(xcoef)
 ycoef=t(ycoef)
 
 
- # - Note: sub-loop to consder various sample sizes
+
+ 
+# - Note: sub-loop to consder various sample sizes
 for (TTT in (T_sample))
 {
 
 # - Note: test for each sample size 
+ 
 bandw=floor(TTT^(uband))
 
 zz0=t(xcoef[1:TTT,])
@@ -209,6 +225,8 @@ if (teststat > qu){TEST_RESULT[seed_number,which((TTT)==T_sample)]=1}
 if(seed_number%%200==0){print(c(d_sim,sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number, TESTSTAT[seed_number,]))}
 }
 
+
+
  
 # - Note: Report results
 REPORT=rbind(REPORT,c(sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,5]==corrind)/seed_number))
@@ -218,6 +236,7 @@ Dresults=rbind(Dresults,REPORT)
 AA=t(Dresults)
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
