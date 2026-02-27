@@ -192,7 +192,6 @@ teststat=(eval_vx1/eval_vx0)
 
 xxcoef=xcoef[1:TTT,]-rowMeans(xcoef[1:TTT,])
 
-
 if(d_sim<1/2 & d_sim>-1/2){
 if(d_sim>0){corrind=1}
 if(d_sim<0){corrind=-1}
@@ -202,8 +201,6 @@ if(d_sim>=1/2){
 if(d_sim>1){corrind=1}
 if(d_sim<1){corrind=-1}
 if(d_sim==1){corrind=0} }
-
-
 
 TESTSTAT[seed_number,which(TTT==T_sample)]=teststat
 
@@ -226,6 +223,7 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
