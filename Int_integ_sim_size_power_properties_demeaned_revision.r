@@ -136,6 +136,8 @@ T_sample=c(250,500,750,1000)
 T_max=max(T_sample)
 TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
+
+# - Note: Construct basis functions to be used
 lbnumber2=26; nt = 150 ; t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -147,6 +149,7 @@ seed_number=1
 for (seed_number in 1:maxiter)
 {
 
+# - Note: Generate functional time series)
 x_mat=sim_DGP(1000*seed_number, T_max, d_sim ,nt)
 x_mat
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
@@ -217,6 +220,7 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
