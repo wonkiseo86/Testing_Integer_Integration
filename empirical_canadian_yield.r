@@ -1,13 +1,18 @@
 ## Description: codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
+## - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 source("load_packages.r") 
-# - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
-# - Note: Load pre-calculated critical values for approximate p-values and data 
+
+
+
+## - Note: Load pre-calculated critical values for approximate p-values and data 
 load("CV1.Rdata") 
 data_raw   = read.csv("data/Canadian_daily_yields.csv")
 data_raw=as.matrix(data_raw[,2:ncol(data_raw)])
+
+
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -17,6 +22,9 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -28,6 +36,9 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+
+
+
 # - Note: Basic parameter setup
 uband=1/5
 ql=0.04467116 
@@ -37,6 +48,9 @@ TTT=T_sample
 x_mat=t(data_raw)
 nt=nrow(x_mat)
 
+
+
+
 # - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
@@ -44,6 +58,9 @@ for (i in 1:(lbnumber2/2)){
   LBF[,2*i-1] = sqrt(2)*sin(2*pi*i*t) /sqrt(inner(sqrt(2)*sin(2*pi*i*t),sqrt(2)*sin(2*pi*i*t),t))
   LBF[,2*i] = sqrt(2)*cos(2*pi*i*t)/sqrt(inner(sqrt(2)*cos(2*pi*i*t),sqrt(2)*cos(2*pi*i*t),t))
 }
+
+
+
 
 ################
 ### V_0 test ##
@@ -78,6 +95,10 @@ if (teststat > qu) {print("Reject at upper tail")}
 if (teststat < ql) {print("Reject at lower tail")}
 if (teststat > ql & teststat <qu) {print("Accept")}
 
+
+
+
+
 ################
 ### V_1 test ##
 ################
@@ -108,6 +129,10 @@ teststat2
 if (teststat2 > qu) {print("Reject at upper tail")}
 if (teststat2 < ql) {print("Reject at lower tail")}
 if (teststat2 > ql & teststat2 <qu) {print("Accept")}
+
+
+
+
 
 ###############
 ### V_2 test## 
@@ -142,6 +167,9 @@ teststat3
 if (teststat3 > qu) {print("Reject at upper tail")}
 if (teststat3 < ql) {print("Reject at lower tail")}
 if (teststat3 > ql & teststat3 <qu) {print("Accept")}
+
+
+
 
 
 # - Note: Computation of approximate p-values
