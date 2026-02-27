@@ -1,8 +1,11 @@
 ## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
-source("load_packages.r") 
+
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
+
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -12,6 +15,8 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -24,10 +29,13 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 
 
 
+
 # - Note: Basic parameter setup
 bdd=0.6;  ###########################################################################################
 bdd2=0.15;  ##### Not Used
 addmargin=0.01
+
+
 
 
 # - Note: Function sim_DGP
@@ -95,6 +103,8 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  }
 
 
+
+
 # - Note: Basic parameter setup
 decrea=0.5
 margin=0
@@ -130,6 +140,8 @@ TEST_RESULT=matrix(ncol=length(T_sample),nrow=maxiter); TEST_RESULT2=TEST_RESULT
 TESTSTAT=matrix(ncol=length(T_sample),nrow=maxiter); TESTSTAT2=TESTSTAT; TESTSTAT3=TESTSTAT
 
 
+
+
 # - Note: Simulation loop begins
 for(iijj in 1:maxiter)
 {
@@ -143,7 +155,6 @@ for (i in 1:(lbnumber2/2)){
   LBF[,2*i-1] = sqrt(2)*sin(2*pi*i*t) /sqrt(inner(sqrt(2)*sin(2*pi*i*t),sqrt(2)*sin(2*pi*i*t),t))
   LBF[,2*i] = sqrt(2)*cos(2*pi*i*t)/sqrt(inner(sqrt(2)*cos(2*pi*i*t),sqrt(2)*cos(2*pi*i*t),t))
 }
-
 
 
 # - Note: Generate functional time series)	
@@ -209,6 +220,9 @@ if(seed_number%%100==0){print(seed_number)}
 }
 
 
+
+
+
 # - Note: Report results
 true_0a=which(d_rand<0)
 true_0b=which(d_rand>0 & d_rand < 1/2)
@@ -237,6 +251,7 @@ correct_set3=cbind(correct_set3,cs3)
 round(colSums(correct_set1)/sum(d_rand<0),digits=3)
 round(colSums(correct_set2)/sum(0<d_rand & d_rand<1),digits=3)
 round(colSums(correct_set3)/sum(d_rand>1),digits=3)
+
 
 
 
