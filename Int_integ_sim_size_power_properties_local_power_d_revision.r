@@ -1,8 +1,10 @@
 ## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
-source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
+
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -13,6 +15,8 @@ inner = dget("auxiliary/inprod.R")
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
 
+
+
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
 # - Desc: Computes the long-run covariance matrix (Omega) required for test statistics.
@@ -21,6 +25,7 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 #    kernel: Kernel type index 
 # - Output: A list containing 'omega' (the estimated long-run covariance matrix).
 # - Assumptions: Bartlett kernel is used. 
+
 
 
 result_collect = NULL; result_collect2=result_collect
@@ -35,8 +40,8 @@ bdd=0.15; ##### parameter "b" in the paper ##########
 bdd2=bdd ############################################
 Dset3=round(seq(-0.9,0.9,by=0.3),digits=3)
 #Dset3=c(-2.4,-2,-1.6,-1.2,-0.8,-0.4,0,0.4,0.8,1.2,1.6,2.0,2.4)/2 
-
 localpower=1
+
 
 
 # - Note: Function sim_DGP
@@ -103,6 +108,8 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
 }
 
 
+
+ 
 # - Note: Basic parameter setup 
 decrea=0.5
 margin=0
@@ -133,7 +140,10 @@ if(localpower==1){DDset=Dset3}
 
 set.seed(9999)
 
-# - Simulation loop begins for each sample size and various values of memory parameters
+
+ 
+ 
+# - Note: Simulation loop begins for each sample size and various values of memory parameters
 for(d_sim in DDset)  ##########################################
 {
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
@@ -157,8 +167,9 @@ localrate=(1/log(divratio))
 seed_number=1
 for (seed_number in 1:maxiter)
 {
-
- # - Note: Generate functional time series)
+ 
+# - Note: Generate functional time series)
+ 
 x_mat=sim_DGP(1000*seed_number, TTT, d_sim*localrate ,nt)
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
 xcoef=hh
@@ -168,7 +179,10 @@ xcoef=t(xcoef)
 ycoef=t(ycoef)
 
 
+ 
+ 
 # - Note: implementation of test
+ 
 zz0=t(xcoef[1:TTT,])
 zz0=zz0 
 zz0=t(zz0)
@@ -225,6 +239,8 @@ AA2=t(Dresults2)
 result_collect = rbind(result_collect,AA)
 result_collect2 = rbind(result_collect2,AA2)
 }
+
+
 
 
 
@@ -303,6 +319,7 @@ legend("top", legend = paste0("T = ", T_vals),
 
 # Close the PNG device
 dev.off()
+
 
 
 
