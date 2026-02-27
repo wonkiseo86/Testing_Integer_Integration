@@ -22,23 +22,33 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Output: A list containing 'omega' (the estimated long-run covariance matrix).
 # - Assumptions: Bartlett kernel is used. 
 
-## T_sample=c(125,250,500,750,1000)
+
 result_collect = NULL; result_collect2=result_collect
 
 for (T_sample in c(125,250,500,750,1000))
 {
-#T_sample=1000
-
+ 
+# - Note: Basic parameter setup
 nonstat=0
 addmargin = 0.01
 bdd=0.15; ##### parameter "b" in the paper ########## 
 bdd2=bdd ############################################
-
 Dset3=round(seq(-0.9,0.9,by=0.3),digits=3)
 #Dset3=c(-2.4,-2,-1.6,-1.2,-0.8,-0.4,0,0.4,0.8,1.2,1.6,2.0,2.4)/2 
 
 localpower=1
- 
+
+
+# - Note: Function sim_DGP
+# - usage: sim_DGP(seed_number, sample_size, d, grid_number)
+# - Desc: Generate fractionally integrated functional time series
+# - Inputs: 
+#    seed_number: Input seed number
+#    sample_size: length of time series
+#    d: memory parameter
+#    grid_number: the number of grids where functions are evaluated
+# - Output: fractionally integrated functional time series 
+# - Assumptions: Fourier basis functions are used to construct functional time series.  
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
 {
  bunin=0
@@ -91,12 +101,13 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  data1=LBFP%*%YY
  return(data1)
 }
- 
+
+
+# - Note: Basic parameter setup 
 decrea=0.5
 margin=0
 cutsd=1
 uband=1/4 #0, 1/5 and 1/4
-
 
 maxiter=2000
 
@@ -112,24 +123,20 @@ bw1=0.65
 #d_sim = 0.6,0.8,1,1.2,1.4
 #d_sim = -0.4,-0.2,0,0.2,0.4
 
-
-
 Dresults=NULL; Dresults2=Dresults
 
 Dset1=c(-0.45,-0.3,-0.15,0,0.15,0.3,0.45)
 Dset2=c(1-0.45,1-0.3,1-0.15,1,1.15,1.3,1.45)
 
-
- 
 if(nonstat==1){DDset=Dset2}else{DDset=Dset1} 
 if(localpower==1){DDset=Dset3}
 
 set.seed(9999)
+
+# - Simulation loop begins for each sample size and various values of memory parameters
 for(d_sim in DDset)  ##########################################
 {
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
-
-
 
 T_max=max(T_sample)
 TEST_RESULT=matrix(ncol=length(Dset3),nrow=maxiter); TEST_RESULT2=TEST_RESULT ; TEST_RESULT3=TEST_RESULT
@@ -151,6 +158,7 @@ seed_number=1
 for (seed_number in 1:maxiter)
 {
 
+ # - Note: Generate functional time series)
 x_mat=sim_DGP(1000*seed_number, TTT, d_sim*localrate ,nt)
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
 xcoef=hh
@@ -160,7 +168,7 @@ xcoef=t(xcoef)
 ycoef=t(ycoef)
 
 
-
+# - Note: implementation of test
 zz0=t(xcoef[1:TTT,])
 zz0=zz0 
 zz0=t(zz0)
@@ -170,7 +178,6 @@ zz2=apply(zz0,2, cumsum)
 vx_eigen = crossprod(zz2) / (TTT^2)
 eelements=eigen(vx_eigen)
 ev0=eelements$vectors[,1]  
-
 
 if(d_sim*localrate>1/2){zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] }
 zz2=apply(zz0,2, cumsum)
@@ -185,7 +192,6 @@ teststat=(eval_vx1/eval_vx0)
 
 xxcoef=xcoef[1:TTT,]-rowMeans(xcoef[1:TTT,])
 
-
 if(d_sim*localrate<1/2 & d_sim*localrate>-1/2){
 if(d_sim*localrate>0){corrind=1}
 if(d_sim*localrate<0){corrind=-1}
@@ -196,14 +202,11 @@ if(d_sim*localrate>1){corrind=1}
 if(d_sim*localrate<1){corrind=-1}
 if(d_sim*localrate==1){corrind=0} }
 
-
-
 TESTSTAT[seed_number,which(DDset==d_sim)]=teststat
 
 if (teststat > ql & teststat<qu){TEST_RESULT[seed_number,which(DDset==d_sim)]=0}
 if (teststat < ql){TEST_RESULT[seed_number,which(DDset==d_sim)]=-1}
 if (teststat > qu){TEST_RESULT[seed_number,which(DDset==d_sim)]=1}
-
 
 if(seed_number%%200==0){print(c(d_sim,sum(TEST_RESULT[1:seed_number,which(DDset==d_sim)]==corrind)/seed_number))}
 }
@@ -225,6 +228,7 @@ result_collect2 = rbind(result_collect2,AA2)
 
 
 
+# - Note: Report results
 #round(result_collect,digits=3)
 subindex=NULL
 
@@ -243,7 +247,6 @@ report[,(ncol(report)/2 +1) ]=1-report[,(ncol(report)/2 +1)]
 
 round(report,digits=3)
 
-
 #round(result_collect2,digits=3)
 subindex=NULL
 
@@ -257,8 +260,6 @@ report2=result_collect2[,subindex]
 report2[,(ncol(report2)/2 +1) ]=1-report2[,(ncol(report2)/2 +1)]
 
 round(report2,digits=3)
-
-
 
 #TTT=c(125,250,500,750,1000)
 #bandw=floor(TTT^(0.2))
@@ -302,6 +303,7 @@ legend("top", legend = paste0("T = ", T_vals),
 
 # Close the PNG device
 dev.off()
+
 
 
 
