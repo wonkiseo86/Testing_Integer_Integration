@@ -23,11 +23,23 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+# - Note: Basic parameter setup
  nonstat=0
  addmargin=0.01
  bdd=0.6;  ###########################################################################################
  bdd2=0.15; ## Not Used
- 
+
+
+# - Note: Function sim_DGP
+# - usage: sim_DGP(seed_number, sample_size, d, grid_number)
+# - Desc: Generate fractionally integrated functional time series
+# - Inputs: 
+#    seed_number: Input seed number
+#    sample_size: length of time series
+#    d: memory parameter
+#    grid_number: the number of grids where functions are evaluated
+# - Output: fractionally integrated functional time series 
+# - Assumptions: Fourier basis functions are used to construct functional time series. 
 sim_DGP <- function(seed_number, sample_size, d, grid_number)
  {
  bunin=0
@@ -84,12 +96,11 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  
 
 
-
+# - Note: Basic parameter setup
 decrea=0.5
 margin=0
 cutsd=1
 uband=1/5 #1/3 and 1/4
-
 
 #ql=0.04467116 
 #qu=2.12588475 
@@ -100,12 +111,8 @@ ql2=qnorm(0.025)
 qu2=qnorm(0.975)
 bw1=0.65
 
-
-
-
 #d_sim = 0.6,0.8,1,1.2,1.4
 #d_sim = -0.4,-0.2,0,0.2,0.4
-
 
 Dresults=NULL
 
@@ -115,6 +122,8 @@ Dset2=c(1-0.45,1-0.3,1-0.15,1,1.15,1.3,1.45)
 if(nonstat==1){DDset=Dset2}else{DDset=Dset1} 
 
 set.seed(99999999)
+
+# - Simulation loop begins
 for(d_sim in DDset)  ##########################################
 {
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
@@ -145,9 +154,11 @@ hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
 xcoef=hh
 xcoef=t(xcoef)
 
-
+ 
+ # - Note: sub-loop to consder various sample sizes
 for (TTT in (T_sample))
 {
+# - Note: test for each sample size 
 bandw=floor(TTT^(uband))
 
 zz0=t(xcoef[1:TTT,])
@@ -161,7 +172,6 @@ vx_eigen = crossprod(zz2) / (TTT^2)
 eelements=eigen(vx_eigen)
 ev0=eelements$vectors[,1]  
 
-
 if(d_sim>1/2){zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] }
 zz2=apply(zz0,2, cumsum)
 v0=lrvar(zz,kernel=2)$omega / TTT
@@ -173,9 +183,7 @@ eval_vx1= t(ev0)%*%vx1%*%ev0
 
 teststat=(eval_vx1/eval_vx0)
 
-
 xxcoef=xcoef[1:TTT,]-rowMeans(xcoef[1:TTT,])
-
 
 if(d_sim<1/2 & d_sim>-1.2){
 if(d_sim>0){corrind=1}
@@ -187,24 +195,20 @@ if(d_sim>1){corrind=1}
 if(d_sim<1){corrind=-1}
 if(d_sim==1){corrind=0} }
 
-
 if (d_sim>1/2){ql=0.04467116;qu=2.12588475 }else{ql=0.03038333;qu=0.57504599} 
-
-
 
 TESTSTAT[seed_number,which(TTT==T_sample)]=teststat
 
 if (teststat > ql & teststat<qu){TEST_RESULT[seed_number,which(TTT==T_sample)]=0}
 if (teststat < ql){TEST_RESULT[seed_number,which((TTT)==T_sample)]=-1}
 if (teststat > qu){TEST_RESULT[seed_number,which((TTT)==T_sample)]=1}
-
-
 }
 
 if(seed_number%%200==0){print(c(d_sim,sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number, TESTSTAT[seed_number,]))}
-
 }
 
+ 
+# - Note: Report results
 REPORT=rbind(REPORT,c(sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number))
 Dresults=rbind(Dresults,REPORT)
 }
@@ -213,6 +217,7 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
