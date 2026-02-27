@@ -4,6 +4,7 @@
 source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
+# - Note: Load pre-calculated critical values for approximate p-values and data 
 load("CV1.Rdata") 
 data_raw   = read.csv("data/Canadian_daily_yields.csv")
 data_raw=as.matrix(data_raw[,2:ncol(data_raw)])
@@ -26,18 +27,17 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Output: A list containing 'omega' (the estimated long-run covariance matrix).
 # - Assumptions: Bartlett kernel is used. 
 
-uband=1/5
 
+# - Note: Basic parameter setup
+uband=1/5
 ql=0.04467116 
 qu=2.12588475 
-
 T_sample=nrow(data_raw)
 TTT=T_sample
-
 x_mat=t(data_raw)
 nt=nrow(x_mat)
 
-
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -45,7 +45,10 @@ for (i in 1:(lbnumber2/2)){
   LBF[,2*i] = sqrt(2)*cos(2*pi*i*t)/sqrt(inner(sqrt(2)*cos(2*pi*i*t),sqrt(2)*cos(2*pi*i*t),t))
 }
 
-### V_0 test## 
+################
+### V_0 test ##
+################
+# - Note: Computation of V0 test statistic and implementation of the test 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -78,7 +81,8 @@ if (teststat > ql & teststat <qu) {print("Accept")}
 ################
 ### V_1 test ##
 ################
- 
+# - Note: Computation of V1 test statistic and implementation of the test 
+
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -108,6 +112,7 @@ if (teststat2 > ql & teststat2 <qu) {print("Accept")}
 ###############
 ### V_2 test## 
 ###############
+# - Note: Computation of V2 test statistic and implementation of the test. 
 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
@@ -124,7 +129,6 @@ zz=zz0
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
 TTT=TTT-1
 zz=zz[2:TTT,]-zz[1:(TTT-1),];zz0=zz0[2:TTT,]-zz0[1:(TTT-1),] 
-######################################################
 
 zz2=apply(zz0,2, cumsum)
 v0=lrvar(zz,kernel=2)$omega / TTT
@@ -140,6 +144,8 @@ if (teststat3 > qu) {print("Reject at upper tail")}
 if (teststat3 < ql) {print("Reject at lower tail")}
 if (teststat3 > ql & teststat3 <qu) {print("Accept")}
 
+
+# - Note: Computation of approximate p-values
 seqbase=seq(0,1,0.001)
 quantile_grid=as.vector(quantile(CV1,seqbase))
 
