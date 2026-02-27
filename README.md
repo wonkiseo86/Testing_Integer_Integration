@@ -41,6 +41,7 @@ All data files must be placed in a directory named `data` at the project root.
 
 ### Data Files
 * **CV1.Rdata**: Critical values for various quantiles which are used for the Canadian yield curve example (to compute approximate p-values)
+* **Critical_values.r**: R script used to compute Critical values for various quantiles. 
 
 ---
 
