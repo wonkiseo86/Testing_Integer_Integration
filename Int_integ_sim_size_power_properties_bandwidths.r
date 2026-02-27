@@ -1,8 +1,10 @@
 ## Description: Simulation codes for eigenvalue ratio estimators and variance ratio tests.
 ## The code can produce the results given in Tables 1 and 2 of the paper.
 
-source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
+source("load_packages.r") 
+
+
 
 inner = dget("auxiliary/inprod.R")
 # - usage: inner(a,b,c)
@@ -12,6 +14,9 @@ inner = dget("auxiliary/inprod.R")
 #    c: Regularly spaced grid points (Numeric vector).
 # - Output: Numeric scalar (Approximated integral).
 # - Assumptions: 'c' is a constant-step grid; 'a' and 'b' have the same length.
+
+
+
 
 lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - usage: lr_var(u, kernel)
@@ -23,11 +28,15 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 
 
+
+
 # - Note: Basic parameter setup
  nonstat=0
  addmargin=0.01
  bdd=0.75;  ### parameter "b" in the paper,  0.15, 0.6; 0.75 for the results given in The Supplementary Material ######################
  bdd2=bdd;
+
+
 
 
 # - Note: Function sim_DGP
@@ -45,7 +54,6 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  bunin=0
  T=sample_size+bunin; nt=grid_number; t = (0:(nt-1))/(nt-1); d2=d*(d>-1/2 & d<1/2) + (0.25)*(d>=1/2);  
 
- 
  YY=NULL
  for (da in c(d2,runif(1,max(d2-0.2,-0.5),max(d2-0.1,-0.5+addmargin))))
  #for (da in c(d2,max(d2-0.2,-0.4)))
@@ -96,6 +104,8 @@ sim_DGP <- function(seed_number, sample_size, d, grid_number)
  
 
 
+
+
 # - Note: Basic parameter setup
 decrea=0.5
 margin=0
@@ -124,11 +134,12 @@ if(nonstat==1){DDset=Dset2}else{DDset=Dset1}
 set.seed(99999)
 
 
-# - Simulation loop begins
+
+
+# - Note: Simulation loop begins
 for(d_sim in DDset)  ##########################################
 {
 REPORT=NULL; REPORT2=REPORT ; REPORT3=REPORT
-
 
 maxiter=2000
 
@@ -151,7 +162,7 @@ seed_number=1
 for (seed_number in 1:maxiter)
 {
 
- # - Note: Generate functional time series)
+# - Note: Generate functional time series)
 x_mat=sim_DGP(1000*seed_number, T_max, d_sim ,nt)
 hh=t(LBF[2:(nt),])%*%x_mat[2:(nt),]*(t[2]-t[1])
 xcoef=hh
@@ -215,7 +226,9 @@ if(seed_number%%200==0){print(c(d_sim,sum(TEST_RESULT[1:seed_number,1]==corrind)
 }
 
 
- # - Note: Report results
+ 
+
+# - Note: Report results
 REPORT=rbind(REPORT,c(sum(TEST_RESULT[1:seed_number,1]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,2]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,3]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,4]==corrind)/seed_number,sum(TEST_RESULT[1:seed_number,5]==corrind)/seed_number))
 Dresults=rbind(Dresults,REPORT)
 }
@@ -224,6 +237,7 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
