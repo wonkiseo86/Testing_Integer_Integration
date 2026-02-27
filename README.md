@@ -5,7 +5,7 @@
 
 To ensure full reproducibility of the results presented in the paper, please configure your environment as follows:
 ### Software Requirements
-The analysis was performed using **R version 4.3.1** (또는 교수님의 실제 버전으로 수정). The following R packages and their specific versions are required to replicate the results:
+The analysis was performed using **R version 4.5.1**. The following R packages and their specific versions are required to replicate the results:
 
 * **Packages:** `fda` (6.3.0), `tseries` (0.10-58), `sandwich` (3.1-1), `sde` (2.0.18), `variables` (1.1-2), `basefun` (1.2-3), `polynom` (1.4-1), `fracdiff` (1.5-3), `arfima` (1.8-1), `fdaACF` (1.0.0), `ftsa` (6.6), and `LaplacesDemon` (16.1.6).
 
