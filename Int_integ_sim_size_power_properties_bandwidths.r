@@ -161,10 +161,11 @@ xcoef=t(xcoef)
 ycoef=t(ycoef)
 
 
-
- # - Note: sub-loop to consder various sample sizes
+# - Note: sub-loop to consder various sample sizes
 for (TTT in (T_sample))
 {
+ 
+# - Note: test for each sample size 
 bandw=floor(TTT^(uband)) 
 if(uband==0){bandw=floor(0.4*log(TTT))}
 
@@ -223,6 +224,7 @@ AA=t(Dresults)
 
 AA[,4]=1-AA[,4]
 round(AA,digits=3)
+
 
 
 
