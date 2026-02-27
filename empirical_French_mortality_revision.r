@@ -2,6 +2,8 @@
 source("load_packages.r") 
 # - Note: This script only loads standard CRAN packages (e.g., fda, etc.) required for the analysis. No custom functions are defined herein.
 
+
+# - Note: Load data 
 n_sub=22
 fseries = array(0,dim = c(121,106,n_sub))
 mseries = array(0,dim = c(121,106,n_sub))
@@ -49,11 +51,8 @@ lrvar = dget("auxiliary/lr_var_v2_for_fractional.R")
 # - Assumptions: Bartlett kernel is used. 
 # plot
 
-require(LaplacesDemon)
-require(fdaACF)
 
-
-## Data preprocessing
+# - Note: Data preprocessing
 X_series=fseries
 findex=NULL
 for (jj in 1:n_sub)
@@ -77,15 +76,18 @@ if (sum(is.na(check))>0){mindex=append(mindex,jj)}
 ### Results for 9th region can be obtained using the supplementary code  ####
 ######################################################################################
 
+
 #### Transformations#####################################################################
 transformation=1  ## 1: logit, 2: probit, 3: no transformation, 4: log-transformation
 
 
+# - Note: Basic setup
 uband=1/5
 ql=0.04467116 
 qu=2.12588475 
 
-###########################################
+
+# - Note: Transformation of the female data following the "transformation" parameter
 X_series=fseries[,,setdiff(1:n_sub,findex)]
 
 result=NULL 
@@ -118,7 +120,8 @@ T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
-
+  
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -127,7 +130,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: V_0 test for female data 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -152,13 +155,11 @@ eval_vx0= t(ev0)%*%vx0%*%ev0
 eval_vx1= t(ev0)%*%vx1%*%ev0
 teststat=(eval_vx1/eval_vx0)
 
-
 if (teststat < ql) {result=append(result,-1)}
 if (teststat > ql & teststat <qu) {result=append(result,0)}
 
-
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for female data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -190,8 +191,7 @@ if (teststat2 < ql) {result=append(result,0.5)}
 
 
 
-
-
+# - Note: Transformation of the male data following the "transformation" parameter
 X_series=mseries[,,setdiff(1:n_sub,mindex)]
 result2=NULL 
 for (jj in 1:length(setdiff(1:n_sub,mindex)))
@@ -222,7 +222,8 @@ T_sample=ncol(x_mat)
 TTT=T_sample
 nt=nrow(x_mat)
 
-
+  
+# - Note: Construct basis functions to be used
 lbnumber2=26;  t = (0:(nt-1))/(nt-1)
 LBF = matrix(NA,nrow = nt , ncol = lbnumber2)
 for (i in 1:(lbnumber2/2)){
@@ -231,7 +232,7 @@ for (i in 1:(lbnumber2/2)){
 }
 
 
-### V_0 test## 
+# - Note: V_0 test for male data 
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh; xcoef=xcoef[,2:ncol(xcoef)]-xcoef[,1]
 xcoef=t(xcoef)
@@ -262,7 +263,7 @@ if (teststat > ql & teststat <qu) {result2=append(result2,0)}
 
 
 if (teststat > qu){
-### V_1 test## 
+# - Note: V1 test for male data when V0 test is rejected at an upper tail
 hh=t(LBF[1:nt,])%*%x_mat[1:nt,]*(t[2]-t[1])
 xcoef=hh;
 xcoef=t(xcoef)
@@ -291,10 +292,12 @@ if (teststat2 > qu) {result2=append(result2,1.5)}
 if (teststat2 < ql) {result2=append(result2,0.5)}
 }
 
+# - Note: Report results collectively.
 result
 result2
 
 ## Reported numbers 0.5,1.0 and 1.5 represent d in (0,1), d=1, and d in (1,2), respectively.  
+
 
 
 
