@@ -1,6 +1,7 @@
 ## Description: Critical values of the VR test can be computed from this code
 ## Specified quantiles for the max-test are stores in MAXCV
 ## Specified quantiles for the trace-test are stores in TRACECV
+# - Note: In our analysis, we use the pre-computed quantiles in "CV1.RData", the following is used for those. 
 
 ####################################################
 ## Key simulation paramters and related settings ###
@@ -36,6 +37,7 @@ print(nnn)
   
 quantile(CV1,c(0.025,0.975))
 quantile(CV2,c(0.025,0.975))
+
 
 
 
